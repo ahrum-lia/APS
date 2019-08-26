@@ -20,6 +20,7 @@ def move_fishes(R, C, old_board):
                     if 0 <= n_r < R and 0 <= n_c < C:
                         new_board[n_r][n_c].append({'speed': c_speed, 'direction': c_dir, 'size': c_size})
                     else:
+                        # 크기 초과가 나지 않을때까지 숫자와 방향을 바꿔줘야함
                         if c_dir == 1:
                             n_dir = 2
                             n_r =  c_speed - c_r
@@ -83,29 +84,3 @@ for t in range(1, int(input()) + 1):
 
 
 
-
-
-R, C, M = map(int, input().split())
-if M == 0:
-    print(0)
-    exit(0)
-sharks_infos = [list(map(int, input().split())) for _ in range(M)] # r, c, 속력, 이동방향, 크기 (좌표가 1부터 시작)
-board = [[ [] for _ in range(C) ] for _ in range(R)]
-caught_fishes = 0
-dirs = [(), (-1, 0), (1, 0), (0, 1), (0, -1)] # 1:위, 2: 아래, 3:오른, 4:왼
-
-for sha_info in sharks_infos:
-    r, c, = sha_info[0], sha_info[1]
-    board[r-1][c-1].append({'speed': sha_info[2], 'direction': sha_info[3], 'size': sha_info[4]})
-
-for naksi_king_c in range(C):
-    # naksi_king_c에 있는 물고기중 r값이 제일 작은 것 제거(pop ?) & 먹은 물고기 숫자 올리기
-    for i in range(R):
-        if board[i][naksi_king_c]:
-            caught_info = board[i][naksi_king_c].pop()
-            caught_fishes += caught_info['size']
-    # 물고기 이동(함수 만들기)
-    new_board = move_fishes(R, C, board)
-    # 물고기 제거
-    muk_e_sasle(R, C, new_board)
-print(caught_fishes)
